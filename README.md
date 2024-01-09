@@ -6,6 +6,6 @@ to download features and use it in your own code:
 - features extracted using squeeze net 86528 shape : https://drive.google.com/file/d/1-00pBLYX4E9V4gx0eneVgRh_ZfVDDDA4/view?usp=drive_link
 
 # what are the files : 
-Draw plots jupter notebook use saved results to plot features.
+Draw plots jupter notebook use saved results to plot some useful information.
 <br>
 node_features jupyter notebook is used to train models.
