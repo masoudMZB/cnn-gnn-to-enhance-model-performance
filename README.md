@@ -1,35 +1,46 @@
-# cnn-gnn-to-enhance-model-performance
+# CNN-GNN to Enhance Model Performance
 
-to download features and use it in your own code:
-- features extracted using efficient net : https://drive.google.com/file/d/1YgDCP82zGNdwnY3N1jG4jujKZm5It8r9/view?usp=drive_link
-- features extracted using squeeze net 512_13_13 shape : https://drive.google.com/file/d/1KLX2hEeuRTSYX_eSPqRmNl8iqQf0_uRC/view?usp=drive_link 
-- features extracted using squeeze net 86528 shape : https://drive.google.com/file/d/1-00pBLYX4E9V4gx0eneVgRh_ZfVDDDA4/view?usp=drive_link
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.x-blue.svg)
+![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?logo=PyTorch&logoColor=white)
 
-# what are the files : 
-Draw plots jupter notebook use saved results to plot some useful information.
-<br>
-node_features jupyter notebook is used to train models.
+This project demonstrates how to prepare datasets (like CIFAR-10 and MNIST) for graph-based deep learning tasks using PyTorch and PyTorch Geometric, extracting features using Convolutional Neural Networks (CNNs) and enhancing them with Graph Neural Networks (GNNs).
 
-
-# How to generate Datasets.
-Mnist dataset is prepared by the Torch-geometric which is available with this code
-> from torch_geometric.datasets import MNISTSuperpixels
-
-# CIFAR-10 Graph Dataset Preparation
-
-This project demonstrates how to prepare the CIFAR-10 dataset for graph-based deep learning tasks using PyTorch and PyTorch Geometric.
+## Table of Contents
+- [Overview](#overview)
+- [Project Structure](#project-structure)
+- [Features Download](#features-download)
+- [Data Preparation](#data-preparation)
+  - [MNIST Superpixels](#mnist-superpixels)
+  - [CIFAR-10 Graph Dataset Preparation](#cifar-10-graph-dataset-preparation)
+- [Dependencies](#dependencies)
+- [Usage](#usage)
+- [Customization](#customization)
+- [Note](#note)
 
 ## Overview
+The code provided sets up a pipeline to transform image datasets into graph-structured datasets. This transformation involves segmenting the images using the SLIC algorithm and creating a k-nearest neighbors (KNN) graph from the resulting superpixels. Afterwards, features can be extracted using architectures like EfficientNet and SqueezeNet.
 
-The code provided sets up a pipeline to transform the CIFAR-10 image dataset into a graph-structured dataset. This transformation involves segmenting the images using the SLIC algorithm and creating a k-nearest neighbors graph from the resulting superpixels.
+## Project Structure
+- `Draw_plots.ipynb`: A Jupyter Notebook that uses saved results to plot useful information and visualize metrics.
+- `node_features.ipynb`: A Jupyter Notebook used to train the models and work with extracted features.
 
-## Dependencies
+## Features Download
+To download pre-extracted features and use them in your own code, use the following Google Drive links:
+- **Features extracted using EfficientNet:** [Download Link](https://drive.google.com/file/d/1YgDCP82zGNdwnY3N1jG4jujKZm5It8r9/view?usp=drive_link)
+- **Features extracted using SqueezeNet (512x13x13 shape):** [Download Link](https://drive.google.com/file/d/1KLX2hEeuRTSYX_eSPqRmNl8iqQf0_uRC/view?usp=drive_link)
+- **Features extracted using SqueezeNet (86528 shape):** [Download Link](https://drive.google.com/file/d/1-00pBLYX4E9V4gx0eneVgRh_ZfVDDDA4/view?usp=drive_link)
 
-- PyTorch
-- torchvision
-- PyTorch Geometric
+## Data Preparation
 
-## Code Explanation
+### MNIST Superpixels
+The MNIST dataset can be prepared directly using Torch-geometric, which provides a superpixel representation:
+```python
+from torch_geometric.datasets import MNISTSuperpixels
+```
+
+### CIFAR-10 Graph Dataset Preparation
+The following code snippet explains how to transform the CIFAR-10 image dataset into a graph-structured dataset.
 
 ```python
 import torch
@@ -49,27 +60,26 @@ dataset_train = CIFAR10(root='/tmp/CIFAR10', train=True, download=True, transfor
 dataset_test = CIFAR10(root='/tmp/CIFAR10', train=False, download=True, transform=transform)
 ```
 
-### Transform Pipeline
-
+#### Transform Pipeline
 1. `T.ToTensor()`: Converts the input image to a PyTorch tensor.
 2. `ToSLIC(n_segments=117, add_img=False)`: Applies the SLIC (Simple Linear Iterative Clustering) algorithm to segment the image into 117 superpixels. The `add_img=False` parameter means the original image data won't be included in the output.
 3. `KNNGraph(k=15)`: Constructs a k-nearest neighbors graph from the superpixels, with each node connected to its 15 nearest neighbors.
 
-### Dataset Loading
+#### Dataset Loading
+The code loads both the training and testing sets of CIFAR-10, applying the defined transform to each image. The datasets are downloaded to the `/tmp/CIFAR10` directory.
 
-The code loads both the training and testing sets of CIFAR-10, applying the defined transform to each image. The datasets are downloaded to the '/tmp/CIFAR10' directory.
+## Dependencies
+- PyTorch
+- torchvision
+- PyTorch Geometric
 
 ## Usage
-
-This code prepares the CIFAR-10 dataset for graph-based deep learning tasks. After running this code, you can use the `dataset_train` and `dataset_test` objects to train and evaluate graph neural networks on the CIFAR-10 dataset.
+This codebase prepares datasets for graph-based deep learning tasks. After running the preparation code, you can use the `dataset_train` and `dataset_test` objects to train and evaluate graph neural networks on the CIFAR-10 dataset using `node_features.ipynb`. Use `Draw_plots.ipynb` to visualize the results post-training.
 
 ## Customization
-
 You can adjust the following parameters to experiment with different graph structures:
-
 - `n_segments` in `ToSLIC()`: Controls the number of superpixels.
 - `k` in `KNNGraph()`: Determines the number of nearest neighbors for each node.
 
 ## Note
-
 Ensure you have sufficient disk space and memory to handle the transformed dataset, as graph representations can be memory-intensive.
